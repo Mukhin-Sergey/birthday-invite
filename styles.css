@@ -25,6 +25,11 @@ body {
     margin: 0 auto;
 }
 
+
+header .logo {
+    height: 100px; /* Размер логотипа */
+}
+
 /* Герой */
 .hero {
     background-color: #000;
@@ -55,16 +60,19 @@ body {
 
 .about p {
     font-size: 1.2rem;
-    margin-bottom: 30px;
+}
+
+.p1{
+    margin-bottom: 20px;
 }
 
 .person-image {
     width: 300px;
     height: 300px;
-    /*object-fit: cover;*/
-    border-radius: 30%;
+    object-fit: contain; /* Вписывает изображение целиком */
     margin-bottom: 40px;
 }
+
 
 /* Форма */
 .form {
