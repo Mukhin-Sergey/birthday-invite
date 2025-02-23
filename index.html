@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на День Рождения</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Подключение AOS для анимации -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+<header class="hero">
+    <div class="container1">
+        <h1 data-aos="fade-up" data-aos-duration="1000">Приглашение на День Рождения</h1>
+        <p data-aos="fade-up" data-aos-duration="1200">Дата: 8 марта, 18:00</p>
+        <p data-aos="fade-up" data-aos-duration="1400">Место: Ресторан «Султан Палас», Грайвороновская ул., 12, корп. 2, г. Москва</p>
+    </div>
+</header>
+
+<section class="about">
+    <div class="container">
+        <h2 data-aos="fade-up" data-aos-duration="1000">О мероприятии</h2>
+        <p data-aos="fade-up" data-aos-duration="1200">Будем рады видеть вас на нашем празднике! Весёлое настроение, вкусная еда и отличная компания гарантированы.</p>
+        <img src="birthday-person.jpg" alt="Имя именинника" class="person-image" data-aos="zoom-in" data-aos-duration="1400">
+    </div>
+</section>
+
+<section class="map">
+    <div class="container">
+        <h2 data-aos="fade-up" data-aos-duration="1000">Место проведения</h2>
+        <!-- Убираем data-aos из элемента карты -->
+        <div id="map" style="width: 100%; height: 400px;" data-aos="fade-up" data-aos-duration="1200"></div>
+    </div>
+</section>
+
+<section class="form">
+    <div class="container">
+        <h2 data-aos="fade-up" data-aos-duration="1000">Анкета гостя</h2>
+        <form id="rsvp-form" data-aos="fade-up" data-aos-duration="1100">
+            <div class="form-group">
+                <label for="name">Ваше имя и фамилия:</label>
+                <input type="text" id="name" name="entry.1628272883" required placeholder="Иван Иванов">
+            </div>
+
+            <div class="form-group" data-aos="fade-up" data-aos-duration="1200">
+                <label for="attendance">Планируете ли вы присутствовать на мероприятии?</label>
+                <select id="attendance" name="entry.1755998931" required>
+                    <option value="Да, с удовольствием!">Да, с удовольствием!</option>
+                    <option value="К сожалению, не могу">К сожалению, не могу</option>
+                </select>
+            </div>
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <div class="container1">
+        <p>Спасибо, что ознакомились с приглашением!</p>
+    </div>
+</footer>
+
+<!-- Подключение Яндекс.Карт API -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=072d5550-71bc-4b05-894f-ebcdfc93f26d" type="text/javascript"></script>
+<!-- Подключение AOS для анимации -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Инициализация карты
+    function initMap() {
+        const map = new ymaps.Map('map', {
+            center: [55.719736, 37.732478], // Координаты для ресторана «Sultan Palace»
+            zoom: 15
+        });
+
+        // Добавление метки на карту
+        const placemark = new ymaps.Placemark([55.719736, 37.732478], {
+            balloonContent: 'Ресторан «Султан Палас»'
+        });
+
+        map.geoObjects.add(placemark);
+    }
+
+    // Подключаем Яндекс.Карты и инициализируем карту
+    ymaps.ready(initMap);
+
+    // Инициализация анимаций AOS
+    AOS.init();
+
+
+    document.getElementById("rsvp-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Останавливаем стандартную отправку формы
+
+        let formData = new FormData(this);
+
+        fetch("https://docs.google.com/forms/d/e/1FAIpQLSf1p8lmLYmna-qCB1sMI_s7Ax30R5Ci0TNKj3jJqdLlP4p_zQ/formResponse", {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+        }).then(() => {
+            Swal.fire({
+                icon: "success",
+                title: "✅ Ваш ответ отправлен!",
+                text: "Спасибо за ваш ответ.",
+                timer: 3000, // Исчезнет через 3 секунды
+                showConfirmButton: false
+            });
+
+            document.getElementById("rsvp-form").reset(); // Очищаем форму
+        }).catch(error => console.error("Ошибка:", error));
+    });
+</script>
+</body>
+</html>
